@@ -1,10 +1,7 @@
 local SketchLib = {}
 SketchLib.__index = SketchLib
 
--- ┌─────────────────────────────────────────┐
--- │           TEMA / COLORES                │
--- │  Cambia estos valores para personalizar │
--- └─────────────────────────────────────────┘
+
 SketchLib.Theme = {
     -- Fondos
     Background       = Color3.fromRGB(18, 18, 18),   -- Fondo principal de la ventana
