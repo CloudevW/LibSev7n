@@ -1,9 +1,3 @@
--- ╔══════════════════════════════════════════════════════════════╗
--- ║                    SketchLib v1.0                            ║
--- ║          Librería de UI modular para Roblox                  ║
--- ║  Uso: local Lib = loadstring(...)() o require(ModuleScript)  ║
--- ╚══════════════════════════════════════════════════════════════╝
-
 local SketchLib = {}
 SketchLib.__index = SketchLib
 
