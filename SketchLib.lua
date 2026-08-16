@@ -1,7 +1,16 @@
+-- ╔══════════════════════════════════════════════════════════════╗
+-- ║                    SketchLib v1.0                            ║
+-- ║          Librería de UI modular para Roblox                  ║
+-- ║  Uso: local Lib = loadstring(...)() o require(ModuleScript)  ║
+-- ╚══════════════════════════════════════════════════════════════╝
+
 local SketchLib = {}
 SketchLib.__index = SketchLib
 
-
+-- ┌─────────────────────────────────────────┐
+-- │           TEMA / COLORES                │
+-- │  Cambia estos valores para personalizar │
+-- └─────────────────────────────────────────┘
 SketchLib.Theme = {
     -- Fondos
     Background       = Color3.fromRGB(18, 18, 18),   -- Fondo principal de la ventana
@@ -115,7 +124,7 @@ local function MakeLabel(props)
     local l = Instance.new("TextLabel")
     l.Text              = props.Text   or ""
     l.TextColor3        = props.Color  or SketchLib.Theme.TextPrimary
-    l.Font              = props.Font   or Enum.Font.GothamSemiBold
+    l.Font              = props.Font   or Enum.Font.GothamMedium
     l.TextSize          = props.Size   or 13
     l.BackgroundTransparency = 1
     l.TextXAlignment    = props.AlignX or Enum.TextXAlignment.Left
@@ -937,7 +946,8 @@ function SketchLib:CreateWindow(config)
                 pickerPanel.Visible = false
                 pickerPanel.ClipsDescendants = true
 
-            
+                -- Nota: Implementar un color picker completo en Roblox requeriría
+                -- un archivo separado. Aquí se incluye un hue slider básico.
                 local hueLabel = MakeLabel({
                     Text   = "Color: R" .. math.round(color.R*255) ..
                              " G" .. math.round(color.G*255) ..
@@ -1159,6 +1169,85 @@ function SketchLib:CreateWindow(config)
     return WindowObj
 end
 
+-- ┌─────────────────────────────────────────┐
+-- │         EJEMPLO DE USO                  │
+-- └─────────────────────────────────────────┘
+--[[
 
+local Lib = require(script.SketchLib)   -- o loadstring(...)()
+
+-- Cambiar colores (opcional)
+Lib.Theme.Accent    = Color3.fromRGB(100, 200, 255)  -- Azul
+Lib.Theme.Background = Color3.fromRGB(10, 10, 20)
+
+-- Crear ventana
+local Win = Lib:CreateWindow({
+    Title    = "Mi Script",
+    Subtitle = "v2.0",
+})
+
+-- Tab 1
+local AimTab = Win:AddTab({ Name = "Aim", Icon = "🎯" })
+
+local AimSection = AimTab:AddSection("Aimbot")
+
+local myToggle = AimSection:AddToggle({
+    Name     = "Activar Aimbot",
+    Default  = false,
+    Callback = function(state)
+        print("Aimbot:", state)
+    end
+})
+
+local fovSlider = AimSection:AddSlider({
+    Name     = "Campo de Visión",
+    Min      = 10,
+    Max      = 360,
+    Default  = 90,
+    Suffix   = "°",
+    Step     = 5,
+    Callback = function(val)
+        print("FOV:", val)
+    end
+})
+
+local hitboxDrop = AimSection:AddDropdown({
+    Name     = "Hitbox",
+    Options  = { "Cabeza", "Torso", "Aleatorio" },
+    Default  = "Cabeza",
+    Callback = function(opt)
+        print("Hitbox:", opt)
+    end
+})
+
+local aimKey = AimSection:AddKeybind({
+    Name     = "Hotkey",
+    Default  = Enum.KeyCode.Q,
+    Callback = function(key)
+        print("Nuevo hotkey:", key.Name)
+    end
+})
+
+-- Tab 2
+local VisualsTab = Win:AddTab({ Name = "Visuals", Icon = "👁" })
+local VisSection = VisualsTab:AddSection("ESP")
+
+VisSection:AddToggle({ Name = "ESP Jugadores", Default = true, Callback = function(v) end })
+VisSection:AddColorPicker({
+    Name     = "Color ESP",
+    Default  = Color3.fromRGB(255, 0, 0),
+    Callback = function(c) print(c) end
+})
+VisSection:AddSlider({ Name = "Grosor ESP", Min = 1, Max = 5, Default = 2 })
+
+-- Tecla para abrir/cerrar
+local UIS = game:GetService("UserInputService")
+UIS.InputBegan:Connect(function(i, gp)
+    if not gp and i.KeyCode == Enum.KeyCode.RightShift then
+        Win:Toggle()
+    end
+end)
+
+]]
 
 return SketchLib
